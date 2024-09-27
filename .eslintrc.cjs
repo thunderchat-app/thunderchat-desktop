@@ -12,6 +12,7 @@ module.exports = {
     'react/prop-types': 'off',
     'react/no-unknown-property': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
+    'react/no-unescaped-entities': 'off',
     '@typescript-eslint/ban-types': 'off',
     '@typescript-eslint/no-unused-vars': [
       'error',

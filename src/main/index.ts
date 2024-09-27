@@ -1,7 +1,11 @@
 import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
+
 import icon from '../../resources/icon.png?asset'
+
+import ElectronGoogleOAuth2 from '../utils/electron-google-oauth2'
+import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from '../utils/constants'
 
 function createWindow(): void {
   // Create the browser window.
@@ -51,6 +55,18 @@ app.whenReady().then(() => {
 
   // IPC test
   ipcMain.on('ping', () => console.log('pong'))
+
+  ipcMain.handle('google-signin', async () => {
+    const api = new ElectronGoogleOAuth2(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, [
+      'https://www.googleapis.com/auth/drive.metadata.readonly'
+    ])
+
+    const tokens = await api.openAuthWindowAndGetTokens()
+
+    api.setTokens(tokens)
+
+    return !!tokens
+  })
 
   createWindow()
 
